@@ -6,18 +6,8 @@ services:
       context: ./tenderduty
     container_name: tenderduty
     ports:
-      - "8888:8888"  # Dashboard
-      - "28686:28686"  # Prometheus exporter
+      - "8888:8888"
+      - "28686:28686"
     volumes:
-      - home:/var/lib/tenderduty
-      - ./config.yml:/var/lib/tenderduty/config.yml
-      - ./chains.d:/var/lib/tenderduty/chains.d/
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "20m"
-        max-file: "10"
+      - ./config.yml:/var/lib/tenderduty/config.yml:ro
     restart: unless-stopped
-
-volumes:
-  home:
