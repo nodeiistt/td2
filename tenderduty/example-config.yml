@@ -1,0 +1,57 @@
+enable_dashboard: yes
+listen_port: 8888
+hide_logs: yes
+node_down_alert_minutes: 1
+node_down_alert_severity: critical
+prometheus_enabled: yes
+prometheus_listen_port: 28686
+
+pagerduty:
+  enabled: no
+  api_key: aaaaaaaaaaaabbbbbbbbbbbbbcccccccccccc
+  default_severity: alert
+discord:
+  enabled: yes
+  webhook: https://discord.com/api/webhooks/123123123123/VHD40f27OjPHNI
+telegram:
+  enabled: yes
+  api_key: '111111111111:BQdmxIURg6cFte9jo'
+  channel: "11111111"
+
+slack:
+  enabled: no
+  webhook: https://hooks.slack.com/services/AAAAAAAAAAAAAAAAAAAAAAA/bbbbbbbbbbbbbbbbbbbbbbbb
+
+chains:
+  "Testnet Gnoland":
+    chain_id: test6
+    valoper_address: g1....
+    public_fallback: no
+    alerts:
+      stalled_enabled: yes
+      stalled_minutes: 10
+      consecutive_enabled: yes
+      consecutive_missed: 5
+      consecutive_priority: critical
+      percentage_enabled: no
+      percentage_missed: 10
+      percentage_priority: warning
+      alert_if_inactive: yes
+      alert_if_no_servers: yes
+      pagerduty:
+        enabled: yes
+        api_key: "" # uses default if blank
+      discord:
+        enabled: yes
+        webhook: "" # uses default if blank
+      telegram:
+        enabled: yes
+        api_key: "" # uses default if blank
+        channel: "" # uses default if blank
+      slack:
+          enabled: yes
+          webhook: "" # uses default if blank
+
+    nodes:
+      - url: https://gnoland-testnet-rpc.itrocket.net:443
+        alert_if_down: yes
