@@ -2,7 +2,6 @@ package tenderduty
 
 import (
 	"context"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -71,8 +70,10 @@ type GnoBlockResponse struct {
 }
 
 // IsGnolandChain checks if the chain is a Gnoland chain
+// It checks if the validator address starts with "g1" (Gnoland address format)
 func (cc *ChainConfig) IsGnolandChain() bool {
-	return cc.ChainId == "test6" || strings.Contains(cc.ChainId, "gno")
+	// Check if validator address starts with "g1" (Gnoland address format)
+	return strings.HasPrefix(cc.ValAddress, "g1")
 }
 
 // gnolandHTTPRequest makes HTTP requests to Gnoland RPC endpoints
@@ -298,10 +299,9 @@ func (cc *ChainConfig) gnolandGetValidatorInfo(ctx context.Context) error {
 	cc.valInfo.Missed = 0
 	cc.valInfo.Window = 100 // Default window
 	
-	// Convert the validator address to consensus key format (remove 'g' prefix for consensus key)
-	if validatorBytes, err := hex.DecodeString(strings.TrimPrefix(validatorAddr, "g")); err == nil {
-		cc.valInfo.Conspub = validatorBytes
-	}
+	// For Gnoland, validator address is already in the correct format
+	// No need to decode hex since it's a bech32 address
+	cc.valInfo.Conspub = []byte(validatorAddr)
 	
 	// Initialize blocksResults if needed
 	if cc.blocksResults == nil {

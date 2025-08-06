@@ -24,7 +24,7 @@ slack:
 
 chains:
   "Testnet Gnoland":
-    chain_id: test6
+    chain_id: test7.2
     valoper_address: g1....
     public_fallback: no
     alerts:
