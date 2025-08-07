@@ -61,9 +61,9 @@ function legend() {
 
     let offset = textW
     let grad = ctx.createLinearGradient(offset, 0, offset+gridW, gridH)
-    grad.addColorStop(0, 'rgb(123,255,66)');
-    grad.addColorStop(0.3, 'rgb(240,255,128)');
-    grad.addColorStop(0.8, 'rgb(169,250,149)');
+    grad.addColorStop(0, '#f59e0b');
+    grad.addColorStop(0.5, '#fbbf24');
+    grad.addColorStop(1, '#f59e0b');
     ctx.fillStyle = grad
     ctx.fillRect(offset, 0, gridW, gridH)
     ctx.font = `${scale * 14}px sans-serif`
@@ -73,7 +73,9 @@ function legend() {
 
     offset += 65 * scale
     grad = ctx.createLinearGradient(offset, 0, offset+gridW, gridH)
-    grad.addColorStop(0, 'rgba(0,0,0,0.2)');
+    grad.addColorStop(0, '#10b981');
+    grad.addColorStop(0.5, '#34d399');
+    grad.addColorStop(1, '#10b981');
     ctx.fillStyle = grad
     ctx.fillRect(offset, 0, gridW, gridH)
     ctx.fillStyle = 'grey'
@@ -82,9 +84,9 @@ function legend() {
 
     offset += 50 * scale
     grad = ctx.createLinearGradient(offset, 0, offset+gridW, gridH)
-    grad.addColorStop(0, '#85c0f9');
-    grad.addColorStop(0.7, '#85c0f9');
-    grad.addColorStop(1, '#0b2641');
+    grad.addColorStop(0, '#3b82f6');
+    grad.addColorStop(0.5, '#60a5fa');
+    grad.addColorStop(1, '#3b82f6');
     ctx.fillStyle = grad
     ctx.fillRect(offset, 0, gridW, gridH)
     offset += gridW + gridW/2
@@ -93,9 +95,9 @@ function legend() {
 
     offset += 110 * scale
     grad = ctx.createLinearGradient(offset, 0, offset+gridW, gridH)
-    grad.addColorStop(0, '#381a34');
-    grad.addColorStop(0.2, '#d06ec7');
-    grad.addColorStop(1, '#d06ec7');
+    grad.addColorStop(0, '#8b5cf6');
+    grad.addColorStop(0.5, '#a78bfa');
+    grad.addColorStop(1, '#8b5cf6');
     ctx.fillStyle = grad
     ctx.fillRect(offset, 0, gridW, gridH)
     offset += gridW + gridW/2
@@ -104,8 +106,9 @@ function legend() {
 
     offset += 90 * scale
     grad = ctx.createLinearGradient(offset, 0, offset+gridW, gridH)
-    grad.addColorStop(0, '#8e4b26');
-    grad.addColorStop(0.4, 'darkorange');
+    grad.addColorStop(0, '#ef4444');
+    grad.addColorStop(0.5, '#f87171');
+    grad.addColorStop(1, '#ef4444');
     ctx.fillStyle = grad
     ctx.fillRect(offset, 0, gridW, gridH)
     ctx.beginPath();
@@ -149,32 +152,29 @@ function drawSeries(multiStates) {
                 const grad = ctx.createLinearGradient((i*gridW)+gridTextW, (gridH*j), (i * gridW) + gridW +gridTextW, (gridH*j))
                 switch (multiStates.Status[j].blocks[i]) {
                     case 4: // proposed
-                        grad.addColorStop(0, 'rgb(123,255,66)');
-                        grad.addColorStop(0.3, 'rgb(240,255,128)');
-                        grad.addColorStop(0.8, 'rgb(169,250,149)');
+                        grad.addColorStop(0, '#f59e0b');
+                        grad.addColorStop(0.5, '#fbbf24');
+                        grad.addColorStop(1, '#f59e0b');
                         break
                     case 3: // signed
-                        if (j % 2 === 0) {
-                            grad.addColorStop(0, `rgba(0,0,0,${signColorAlpha})`);
-                            grad.addColorStop(0.9, `rgba(0,0,0,${signColorAlpha})`);
-                        } else {
-                            grad.addColorStop(0, `rgba(0,0,0,${signColorAlpha-0.3})`);
-                            grad.addColorStop(0.9, `rgba(0,0,0,${signColorAlpha-0.3})`);
-                        }
-                        grad.addColorStop(1, 'rgb(186,186,186)');
+                        grad.addColorStop(0, '#10b981');
+                        grad.addColorStop(0.5, '#34d399');
+                        grad.addColorStop(1, '#10b981');
                         break
                     case 2: // precommit not included
-                        grad.addColorStop(0, '#85c0f9');
-                        grad.addColorStop(0.8, '#85c0f9');
-                        grad.addColorStop(1, '#0b2641');
+                        grad.addColorStop(0, '#3b82f6');
+                        grad.addColorStop(0.5, '#60a5fa');
+                        grad.addColorStop(1, '#3b82f6');
                         break
                     case 1: // prevote not included
-                        grad.addColorStop(0, '#381a34');
-                        grad.addColorStop(0.2, '#d06ec7');
-                        grad.addColorStop(1, '#d06ec7');
+                        grad.addColorStop(0, '#8b5cf6');
+                        grad.addColorStop(0.5, '#a78bfa');
+                        grad.addColorStop(1, '#8b5cf6');
                         break
                     case 0: // missed
-                        grad.addColorStop(0, '#c15600');
+                        grad.addColorStop(0, '#ef4444');
+                        grad.addColorStop(0.5, '#f87171');
+                        grad.addColorStop(1, '#ef4444');
                         crossThrough = true
                         break
                     default:

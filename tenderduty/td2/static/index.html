@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
-      /*canvas {
-          image-rendering: -moz-crisp-edges;
-          image-rendering: -webkit-crisp-edges;
-          image-rendering: crisp-edges;
-      }*/
-  </style>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/uikit.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <title>Tenderduty Dashboard</title>
   <script src="js/uikit.min.js"></script>
   <script src="./js/uikit-icons.min.js"></script>
@@ -18,45 +12,300 @@
   <script type="application/javascript" src="grid.js"></script>
   <script type="application/javascript" src="status.js"></script>
   <link rel="icon" href="favicon.png">
+  
+  <style>
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --text-primary: #ffffff;
+      --text-secondary: #888888;
+      --text-muted: #555555;
+      --accent: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #1f1f1f;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    html, body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .chart-container {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    #canvas {
+      display: block;
+      border-radius: 4px;
+    }
+
+    .legend-container {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    #legend {
+      display: block;
+      margin: 0 auto;
+      border-radius: 4px;
+    }
+
+    .table-container {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .logs-container {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .logs-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    #logs {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      padding: 16px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      padding: 24px;
+    }
+
+    .footer-brand {
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .footer-brand .brand {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
 </head>
 
-<body class="uk-background-secondary uk-light" onload="loadState(); legend()">
-<div class="uk-container uk-width-expand uk-height-viewport">
-  <div class="uk-width-expand uk-overflow-auto uk-background-secondary" id="canvasDiv">
-    <div style="width: 4835px;" class="uk-padding-remove-horizontal">
-      <canvas id="canvas" height="20" width="4735"></canvas>
+<body onload="loadState(); legend()">
+  <div class="container">
+    
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">Tenderduty v2 Dashboard</h1>
+      <p class="subtitle">Real-time Blockchain Validator Monitoring</p>
     </div>
-    <div id="legendContainer" class="uk-nav-center uk-background-secondary uk-padding-remove">
-      <canvas id="legend" height="32" width="700"></canvas>
+
+    <!-- Block Status Chart -->
+    <div class="section" id="canvasDiv">
+      <div class="chart-container">
+        <canvas id="canvas" height="20" width="4735"></canvas>
+        <div id="legendContainer" class="legend-container">
+          <canvas id="legend" height="32" width="700"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Validator Table -->
+    <div class="section" id="tableDiv">
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Chain</th>
+              <th>Height</th>
+              <th>Moniker</th>
+              <th>Bonded</th>
+              <th>Uptime</th>
+              <th>RPC Nodes</th>
+            </tr>
+          </thead>
+          <tbody id="statusTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- System Logs -->
+    <div class="section" id="logContainer">
+      <div class="logs-container">
+        <pre id="logs" class="uk-panel-scrollable uk-resize-vertical" style="height: 300px;"></pre>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-brand">
+        developed by <span class="brand">nodeist</span>
+      </div>
     </div>
   </div>
-
-  <div class="uk-padding-small uk-text-small uk-background-secondary uk-overflow-auto" id="tableDiv">
-    <table class="uk-table uk-table-small uk-table-justify uk-padding-remove">
-      <thead>
-      <tr>
-        <th></th>
-        <th>Chain</th>
-        <th>Height</th>
-        <th>Moniker</th>
-        <th style="text-align: center">Bonded</th>
-        <th class="uk-text-center">Uptime</th>
-        <th class="uk-text-center">RPC Nodes</th>
-      </tr>
-      </thead>
-      <tbody id="statusTable"></tbody>
-    </table>
-  </div>
-
-  <div class="uk-padding-large uk-padding-remove-top" id="logContainer">
-    <pre id="logs" class="uk-panel-scrollable uk-resize-vertical" style="background: #080808; height: 300px;"></pre>
-  </div>
-
-  <div class="uk-text-small uk-text-center">
-    <a class="uk-link-muted" onclick="lightMode()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/></svg></a>
-    <a class="uk-link-muted" href="https://blockpane.com"><img src="bp-logo-text.svg" alt="[ block pane ]" style="height: 24px;"></a>
-    <a href="https://github.com/blockpane/tenderduty"><span uk-icon="github" style="color: grey"></span></a>
-  </div>
-</div>
+  <script>
+    // Legend renk düzenlemeleri
+    document.addEventListener('DOMContentLoaded', function() {
+      // Legend canvas'ını bul ve renkleri güzelleştir
+      const legend = document.getElementById('legend');
+      if (legend) {
+        // Legend'ı yeniden çiz
+        const ctx = legend.getContext('2d');
+        
+        // Orijinal legend çizim fonksiyonunu override et
+        const originalLegend = window.legend;
+        window.legend = function() {
+          if (originalLegend) originalLegend();
+          
+          // Renkleri güzelleştir
+          setTimeout(() => {
+            const imageData = ctx.getImageData(0, 0, legend.width, legend.height);
+            const data = imageData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+              const r = data[i];
+              const g = data[i + 1];
+              const b = data[i + 2];
+              
+              // Yeşil tonları (signed) - daha parlak yeşil
+              if (g > r && g > b && g > 100) {
+                data[i] = 16;     // R
+                data[i + 1] = 185; // G - parlak yeşil
+                data[i + 2] = 129; // B
+              }
+              
+              // Kırmızı tonları (missed) - daha parlak kırmızı
+              if (r > g && r > b && r > 100) {
+                data[i] = 239;     // R - parlak kırmızı
+                data[i + 1] = 68;  // G
+                data[i + 2] = 68;  // B
+              }
+              
+              // Sarı tonları (proposer) - daha parlak sarı
+              if (r > 150 && g > 150 && b < 100) {
+                data[i] = 245;     // R - parlak sarı
+                data[i + 1] = 158; // G
+                data[i + 2] = 11;  // B
+              }
+              
+              // Mavi tonları - daha parlak mavi
+              if (b > r && b > g && b > 100) {
+                data[i] = 59;      // R
+                data[i + 1] = 130; // G
+                data[i + 2] = 246; // B - parlak mavi
+              }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+          }, 100);
+        };
+      }
+    });
+  </script>
 </body>
 </html>
